@@ -2,6 +2,11 @@ name: Run Java Code
 
 on:
   workflow_dispatch:
+    inputs:
+      arguments:
+        description: 'Comma-separated arguments to pass to the Java application'
+        required: true
+        default: 'arg1,arg2,arg3'
 
 jobs:
   build:
@@ -21,4 +26,7 @@ jobs:
         run: javac Application.java
 
       - name: Run Java code
-        run: java Application 1 2 3 4
+        run: |
+          # Split input arguments by comma into array using echo and tr
+          ARGS=($(echo "${{ github.event.inputs.arguments }}" | tr ',' ' '))
+          java Application "${ARGS[@]}"
