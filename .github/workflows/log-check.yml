@@ -1,0 +1,33 @@
+name: Manual Triggered Workflow
+
+on:
+  workflow_dispatch:
+    # Define inputs if needed
+    inputs:
+      customArg:
+        description: 'Custom argument for the workflow'
+        required: true
+        default: 'default_value'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2  # Action to checkout the repository
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Execute Bash Commands
+        run: |
+          echo "Starting Bash commands..."
+          echo "Current directory: $PWD"
+          echo "List files:"
+          ls -al
+          echo "Custom argument: ${{ github.event.inputs.customArg }}"
+          echo "Bash commands executed successfully."
